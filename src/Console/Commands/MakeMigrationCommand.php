@@ -53,6 +53,10 @@ class MakeMigrationCommand extends Command
         
         $filename = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class)) . '.php';
         
+        if (($connection = $this->option('connection')))
+            $filename = strtoupper($connection . '--') . $filename;
+        
+        
         if (File::exists($filename))
             throw new Exception("File [$filename] already exists");
         

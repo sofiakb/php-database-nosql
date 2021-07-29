@@ -137,7 +137,7 @@ class Store
         if (!File::exists($this->statsPath))
             File::put($this->statsPath, $this->toString(['count' => 0, 'latestID' => 0]));
         
-        $structureFile = Migration::structure_path() . DIRECTORY_SEPARATOR . "{$tablename}.json";
+        $structureFile = strtoupper($this->connection === 'nosql' ? '' : $this->connection . '--') . Migration::structure_path() . DIRECTORY_SEPARATOR . "{$tablename}.json";
         if ((!File::exists($this->structurePath) && File::exists($structureFile)) || File::lastModified($structureFile) > File::lastModified($this->structurePath))
             File::copy($structureFile, $this->structurePath);
         

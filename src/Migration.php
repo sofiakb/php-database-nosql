@@ -46,7 +46,9 @@ abstract class Migration
         $migrations = [];
         foreach ($files as $file) {
             require $file->getPath();
-            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', File::name($file->getName()))));
+            $filename = explode('--', File::name($file->getName()), 2);
+            $filename = $filename[1] ?? $filename[2];
+            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', $filename)));
             $migrations[] = new $class;
         }
         return $migrations;
