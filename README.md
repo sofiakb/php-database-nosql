@@ -107,7 +107,7 @@ Model::updateBy(['name' => 'tata'], 'name', '=', 'toto');
 Model::whereName('toto')->update(['name' => 'tata']);
 
 Model::deleteBy('name', 'toto');
-Model::whereName('toto')->delete()
+Model::whereName('toto')->delete();
 ```
 
 <!-- ROADMAP -->
