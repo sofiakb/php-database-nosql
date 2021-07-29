@@ -1,0 +1,62 @@
+[
+    {
+        "name": "_id",
+        "column": "id",
+        "length": 0,
+        "default": "",
+        "increment": true,
+        "primary": true,
+        "unique": true,
+        "nullable": false
+    },
+    {
+        "name": "name",
+        "column": "text",
+        "length": 0,
+        "default": "",
+        "increment": false,
+        "primary": false,
+        "unique": false,
+        "nullable": false
+    },
+    {
+        "name": "age",
+        "column": "integer",
+        "length": 0,
+        "default": null,
+        "increment": false,
+        "primary": false,
+        "unique": false,
+        "nullable": true
+    },
+    {
+        "name": "birthdate",
+        "column": "date",
+        "length": 0,
+        "default": null,
+        "increment": false,
+        "primary": false,
+        "unique": false,
+        "nullable": true
+    },
+    {
+        "name": "gender",
+        "column": "text",
+        "length": 1,
+        "default": null,
+        "increment": false,
+        "primary": false,
+        "unique": false,
+        "nullable": true
+    },
+    {
+        "name": "active",
+        "column": "boolean",
+        "length": 0,
+        "default": false,
+        "increment": false,
+        "primary": false,
+        "unique": false,
+        "nullable": true
+    }
+]
