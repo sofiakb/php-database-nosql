@@ -55,7 +55,7 @@ class MakeMigrationCommand extends Command
         
         if (($connection = $this->option('connection'))) {
             $filename = $connection . DIRECTORY_SEPARATOR . $filename;
-            $class = strtoupper($connection) . $class;
+            $class = $class . strtoupper('__' . $connection);
             File::ensureDirectoryExists($this->migrationPath . DIRECTORY_SEPARATOR . $connection);
         }
         

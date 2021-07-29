@@ -45,11 +45,11 @@ abstract class Migration
         $files = File::files(self::path());
         
         $dirs = File::directories(self::path());
-
+        
         foreach ($dirs as $dir) {
             $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => toObject(['name' => $item->getName(), 'path' => $item->getPath(), 'connection' => $dir->getName()]))->toArray());
         }
-
+        
         $migrations = [];
         foreach ($files as $file) {
             if (!method_exists($file, 'getPath')) {
@@ -59,12 +59,12 @@ abstract class Migration
                 $path = $file->getPath();
                 $name = $file->getName();
             }
-
+            
             require $path;
             $filename = explode('--', File::name($name), 2);
             $filename = $filename[1] ?? $filename[0];
-
-            $class = strtoupper($file->connection ?? '') . str_replace(' ', '', ucwords(str_replace('_', ' ', $filename)));
+            
+            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', $filename))) . strtoupper('__' . $file->connection ?? '');
             $migrations[] = new $class;
         }
         return $migrations;
