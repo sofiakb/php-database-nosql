@@ -12,11 +12,11 @@ use Sofiakb\Database\NoSQL\Migration;
 use Sofiakb\Database\NoSQL\Schema\Schema;
 use Sofiakb\Database\NoSQL\Schema\Table;
 
-class ExampleMigration extends Migration
+class ExampleConnectionMigration extends Migration
 {
     public function up()
     {
-        Schema::create('table', function (Table $table) {
+        Schema::connection('CONNECTION_VALUE')->create('table', function (Table $table) {
             $table->id();
         });
     }

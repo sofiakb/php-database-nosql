@@ -27,6 +27,7 @@ class MakeMigrationCommand extends Command
     private ?string $migrationPath;
     
     private const EXAMPLE_CLASS = 'ExampleMigration';
+    private const EXAMPLE_CONNECTION_CLASS = 'ExampleConnectionMigration';
     
     /**
      * MakeMigrationCommand constructor.
@@ -63,6 +64,8 @@ class MakeMigrationCommand extends Command
         if (File::exists($filename))
             throw new Exception("File [$filename] already exists");
         
-        File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace(self::EXAMPLE_CLASS, $class, File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
+        if ($connection)
+            File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace([self::EXAMPLE_CONNECTION_CLASS, 'CONNECTION_VALUE'], [$class, $connection], File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CONNECTION_CLASS . '.php')));
+        else File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace(self::EXAMPLE_CLASS, $class, File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
     }
 }
