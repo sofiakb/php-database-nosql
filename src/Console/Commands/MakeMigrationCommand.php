@@ -53,13 +53,15 @@ class MakeMigrationCommand extends Command
         
         $filename = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class)) . '.php';
         
-        if (($connection = $this->option('connection')))
+        if (($connection = $this->option('connection'))) {
             $filename = strtoupper($connection . '--') . $filename;
+            $class = strtoupper($connection) . $class;
+        }
         
         
         if (File::exists($filename))
             throw new Exception("File [$filename] already exists");
         
-        File::put($this->migrationPath . DIRECTORY_SEPARATOR . str_replace('--', '', $filename), str_replace(self::EXAMPLE_CLASS, $class, File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
+        File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace(self::EXAMPLE_CLASS, $class, File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
     }
 }
