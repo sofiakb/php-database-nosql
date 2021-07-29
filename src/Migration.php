@@ -21,7 +21,7 @@ abstract class Migration
      */
     public static function path(): string
     {
-        return getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations';
+        return getcwd() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'nosql';
     }
     
     /**
