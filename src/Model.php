@@ -114,7 +114,9 @@ class Model
             $method = 'where';
             $arguments = $name !== 'where' ? array_merge([str_replace('where', '', strtolower($name))], $arguments) : $arguments;
             return $this->forwardCallTo($this->table()->getStore(), $method, $arguments);
-        } elseif (method_exists(Store::class, $name) || method_exists(Collection::class, $name)) {
+        } elseif ($name === 'all')
+            return $this->table()->getStore()->findAll()->get();
+        elseif (method_exists(Store::class, $name) || method_exists(Collection::class, $name)) {
             return $this->forwardCallTo($this->table()->getStore(), $name, $arguments);
         } else throw new Exception("Method [$name] not found in " . static::class);
     }
@@ -130,7 +132,8 @@ class Model
         if (strpos($name, 'where') !== false) {
             $method = 'where';
             $arguments = $name !== 'where' ? array_merge([str_replace('where', '', strtolower($name))], $arguments) : $arguments;
-        } //else throw new Exception("Method [$name] not found in " . static::class);
+        } elseif ($name === 'all')
+            return static::getInstance()->table()->getStore()->findAll()->get();//else throw new Exception("Method [$name] not found in " . static::class);
         return call_user_func_array(array(static::getInstance()->table(), $method ?? $name), $arguments);
     }
     
@@ -158,10 +161,10 @@ class Model
     /**
      * @return array|null
      */
-    public function all(): ?array
-    {
-        return toObject(self::getInstance()->table()->getStore()->findAll()->get());
-    }
+    // public function all(): ?array
+    // {
+    //     return toObject(self::getInstance()->table()->getStore()->findAll()->get());
+    // }
     
     /**
      * @param array|string $columns
