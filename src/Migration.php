@@ -31,7 +31,7 @@ abstract class Migration
      */
     public static function structure_path(): string
     {
-        return str_replace('migrations', 'structures', Migration::path());
+        return str_replace(['migrations', '/nosql'], ['structures', ''], Migration::path());
     }
     
     /**
