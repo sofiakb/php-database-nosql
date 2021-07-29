@@ -156,16 +156,16 @@
         },
         {
             "name": "sofiakb/php-support",
-            "version": "v0.0.9-beta5",
+            "version": "v0.0.9-beta6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sofiakb/php-support.git",
-                "reference": "0fe688c25bd22066026e29ade5557d4fe7347243"
+                "reference": "ace78a6a4eba5ed7ea2712b44b16d87497263dd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sofiakb/php-support/zipball/0fe688c25bd22066026e29ade5557d4fe7347243",
-                "reference": "0fe688c25bd22066026e29ade5557d4fe7347243",
+                "url": "https://api.github.com/repos/sofiakb/php-support/zipball/ace78a6a4eba5ed7ea2712b44b16d87497263dd8",
+                "reference": "ace78a6a4eba5ed7ea2712b44b16d87497263dd8",
                 "shasum": ""
             },
             "require": {
@@ -201,7 +201,7 @@
             "support": {
                 "email": "contact.sofiakb@gmail.com",
                 "issues": "https://github.com/sofiakb/php-support/issues",
-                "source": "https://github.com/sofiakb/php-support/tree/v0.0.9-beta5"
+                "source": "https://github.com/sofiakb/php-support/tree/v0.0.9-beta6"
             },
             "time": "2021-07-29T00:00:00+00:00"
         },
