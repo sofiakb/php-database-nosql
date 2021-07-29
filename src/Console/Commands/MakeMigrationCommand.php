@@ -54,8 +54,9 @@ class MakeMigrationCommand extends Command
         $filename = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class)) . '.php';
         
         if (($connection = $this->option('connection'))) {
-            $filename = strtoupper($connection . '--') . $filename;
+            $filename = $connection . DIRECTORY_SEPARATOR . $filename;
             $class = strtoupper($connection) . $class;
+            File::ensureDirectoryExists($this->migrationPath . DIRECTORY_SEPARATOR . $connection);
         }
         
         
