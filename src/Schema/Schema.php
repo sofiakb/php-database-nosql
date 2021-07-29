@@ -19,6 +19,7 @@ use Sofiakb\Support\Traits\ForwardsCalls;
  * @author Sofiakb <contact.sofiak@gmail.com>
  *
  * @method static Table create(string $table, callable $callback)
+ * @method static Table connection(string $connection)
  *
  * @mixin Table
  */

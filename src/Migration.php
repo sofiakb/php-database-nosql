@@ -41,14 +41,30 @@ abstract class Migration
      */
     public static function all(): array
     {
+        File::ensureDirectoryExists(self::path());
         $files = File::files(self::path());
         
+        $dirs = File::directories(self::path());
+
+        foreach ($dirs as $dir) {
+            $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => toObject(['name' => $item->getName(), 'path' => $item->getPath(), 'connection' => $dir->getName()]))->toArray());
+        }
+
         $migrations = [];
         foreach ($files as $file) {
-            require $file->getPath();
-            $filename = explode('--', File::name($file->getName()), 2);
-            $filename = $filename[1] ?? $filename[2];
-            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', $filename)));
+            if (!method_exists($file, 'getPath')) {
+                $path = $file->path;
+                $name = $file->name;
+            } else {
+                $path = $file->getPath();
+                $name = $file->getName();
+            }
+
+            require $path;
+            $filename = explode('--', File::name($name), 2);
+            $filename = $filename[1] ?? $filename[0];
+
+            $class = strtoupper($file->connection ?? '') . str_replace(' ', '', ucwords(str_replace('_', ' ', $filename)));
             $migrations[] = new $class;
         }
         return $migrations;

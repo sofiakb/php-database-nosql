@@ -67,7 +67,7 @@ class Table
             $structure[] = $attribute->compile();
         }
         
-        $structurePath = Migration::structure_path();
+        $structurePath = Migration::structure_path() . ($this->connection === 'nosql' ? '' : DIRECTORY_SEPARATOR . $this->connection);
         File::ensureDirectoryExists($structurePath);
         
         File::put($structurePath . DIRECTORY_SEPARATOR . "{$table}.json", json_encode($structure, JSON_PRETTY_PRINT));
