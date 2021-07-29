@@ -9,7 +9,7 @@ use Sofiakb\Database\Tests\Models\Contact;
  * Date: 29/07/2021
  * Time: 10:51
  */
-class TestModel extends \PHPUnit\Framework\TestCase
+class ModelTest extends \PHPUnit\Framework\TestCase
 {
     
     private array $data;
