@@ -156,16 +156,16 @@
         },
         {
             "name": "sofiakb/php-support",
-            "version": "v0.0.9-beta4",
+            "version": "v0.0.9-beta5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sofiakb/php-support.git",
-                "reference": "0fe644e4cb1c5c7a6fca72812f52ddf7b3401fd7"
+                "reference": "0fe688c25bd22066026e29ade5557d4fe7347243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sofiakb/php-support/zipball/0fe644e4cb1c5c7a6fca72812f52ddf7b3401fd7",
-                "reference": "0fe644e4cb1c5c7a6fca72812f52ddf7b3401fd7",
+                "url": "https://api.github.com/repos/sofiakb/php-support/zipball/0fe688c25bd22066026e29ade5557d4fe7347243",
+                "reference": "0fe688c25bd22066026e29ade5557d4fe7347243",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "support": {
                 "email": "contact.sofiakb@gmail.com",
                 "issues": "https://github.com/sofiakb/php-support/issues",
-                "source": "https://github.com/sofiakb/php-support/tree/v0.0.9-beta4"
+                "source": "https://github.com/sofiakb/php-support/tree/v0.0.9-beta5"
             },
-            "time": "2021-07-26T00:00:00+00:00"
+            "time": "2021-07-29T00:00:00+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
