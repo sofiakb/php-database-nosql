@@ -17,7 +17,7 @@
   <p align="center">
       A PHP Library for detect OS System !
       <br />
-      <!--<a href="https://github.com/sofiakb/php-database-nosql"><strong>Explore the docs »</strong></a>-->
+      <a href="https://github.com/sofiakb/php-database-nosql/phpdoc"><strong>Explore the docs »</strong></a>
       <br />
       <br />
       <a href="https://github.com/sofiakb/php-database-nosql/issues">Report Bug</a>

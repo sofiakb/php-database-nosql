@@ -5,7 +5,7 @@
   "license"          : "MIT",
   "autoload"         : {
     "psr-4"   : {
-      "Sofiakb\\Database\\NoSQL\\": "src/",
+      "Sofiakb\\Database\\NoSQL\\"        : "src/",
       "Sofiakb\\Database\\Tests\\Models\\": "tests/Models/"
     },
     "classmap": [
@@ -43,6 +43,9 @@
   "bin"              : [
     "nsqldb"
   ],
+  "scripts"          : {
+    "doc": "phpdoc --directory . --target docs --title 'php-database-nosql documentation' --ignore vendor -vv"
+  },
   "version"          : "dev-main",
   "time"             : "2021-07-26"
 }
