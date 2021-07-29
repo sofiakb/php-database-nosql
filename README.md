@@ -17,7 +17,7 @@
   <p align="center">
       A PHP Library for detect OS System !
       <br />
-      <a href="https://github.com/sofiakb/php-database-nosql/phpdoc"><strong>Explore the docs »</strong></a>
+      <a href="https://github.com/sofiakb/php-database-nosql/docs"><strong>Explore the docs »</strong></a>
       <br />
       <br />
       <a href="https://github.com/sofiakb/php-database-nosql/issues">Report Bug</a>
@@ -87,22 +87,35 @@ composer require sofiakb/php-database-nosql
 ## Usage
 
 ```php
-use Sofiakb\DetectOS\System;
+//use Sofiakb\DetectOS\System;
 
-// Get os with
-$os = System::getOS();
+use Sofiakb\Database\NoSQL\Model;
 
-// Verify os with
-System::isLinux();
-System::isMac();
-System::isWindows();
+Model::insert(['name' => 'toto']);
+Model::insert([['name' => 'toto'], ['name' => 'titi']]);
+
+Model::where('name', 'toto')->get();
+Model::where('name', 'toto')->first();
+Model::where('name', '=', 'toto')->first();
+Model::whereName('toto')->get();
+
+Model::count();
+Model::first();
+// etc...
+
+Model::updateBy(['name' => 'tata'], 'name', '=', 'toto');
+Model::whereName('toto')->update(['name' => 'tata']);
+
+Model::deleteBy('name', 'toto');
+Model::whereName('toto')->delete();
 ```
 
 <!-- ROADMAP -->
 
 ## Roadmap
 
-See the [open issues](https://github.com/sofiakb/php-database-nosql/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/sofiakb/php-database-nosql/issues) for a list of proposed features (and known
+issues).
 
 
 <!-- LICENSE -->
