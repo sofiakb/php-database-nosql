@@ -181,8 +181,8 @@ class Store
      */
     private function filterData($item, $column, $operator, $value): bool
     {
-        if (!isset($item->$column))
-            return false;
+        // if (!isset($item->$column) && !isset($item->attributes[$column]))
+        //     return false;
         $itemValue = $item->$column;
         switch ($operator) {
             case '>':
@@ -216,8 +216,8 @@ class Store
      */
     private function filterDataNegative($item, $column, $operator, $value): bool
     {
-        if (!isset($item->$column))
-            return false;
+        // if (!isset($item->$column))
+        //     return false;
         $itemValue = $item->$column;
         switch ($operator) {
             case '>':
