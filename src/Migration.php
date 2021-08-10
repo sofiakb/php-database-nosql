@@ -47,14 +47,14 @@ abstract class Migration
         $dirs = File::directories(self::path());
         
         foreach ($dirs as $dir) {
-            $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => toObject(['name' => $item->getName(), 'path' => $item->getPath(), 'connection' => $dir->getName()]))->toArray());
+            $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => toObject(['__name' => $item->getName(), '__path' => $item->getPath(), 'connection' => $dir->getName()]))->toArray());
         }
         
         $migrations = [];
         foreach ($files as $file) {
             if (!method_exists($file, 'getPath')) {
-                $path = $file->path;
-                $name = $file->name;
+                $path = $file->__path;
+                $name = $file->__name;
             } else {
                 $path = $file->getPath();
                 $name = $file->getName();
@@ -64,7 +64,7 @@ abstract class Migration
             $filename = explode('--', File::name($name), 2);
             $filename = $filename[1] ?? $filename[0];
             
-            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', $filename))) . strtoupper('__' . $file->connection ?? '');
+            $class = str_replace(' ', '', ucwords(str_replace('_', ' ', $filename))) . (($file->connection ?? null) ? strtoupper('__' . $file->connection) : '');
             $migrations[] = new $class;
         }
         return $migrations;

@@ -41,7 +41,7 @@ class Checker
      */
     public function __construct(Store $store, array $fields, $data = null)
     {
-        $this->store = new Store($store->getTablename(), $store->getConnection(), $store->getDbDirectory(), $store->getPerFiles(), $store->getColumnID());
+        $this->store = new Store($store->getTablename(), $store->getConnection(), $store->getDbDirectory(), $store->getPerFiles(), $store->getClass(), $store->getColumnID());
         $this->fields = $fields;
         $this->data = $data;
     }

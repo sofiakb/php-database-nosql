@@ -21,7 +21,7 @@ use Sofiakb\Support\Traits\ForwardsCalls;
  * @package Sofiakb\Database\NoSQL\Schema
  * @author Sofiakb <contact.sofiak@gmail.com>
  *
- * @method Type id()
+ * @method Type id($name = null)
  * @method Type integer($name)
  * @method Type text($name)
  * @method Type json($name)

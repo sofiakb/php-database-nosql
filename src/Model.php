@@ -10,6 +10,7 @@
 namespace Sofiakb\Database\NoSQL;
 
 use Exception;
+use JsonSerializable;
 use ReflectionClass;
 use ReflectionException;
 use Sofiakb\Support\Traits\ForwardsCalls;
@@ -25,7 +26,7 @@ use Tightenco\Collect\Support\Collection;
  * @mixin Model
  * @mixin Store
  */
-class Model
+class Model implements JsonSerializable
 {
     use ForwardsCalls;
     
@@ -80,12 +81,24 @@ class Model
     protected int $perFiles = 50;
     
     /**
+     * @var array $attributes
+     */
+    protected array $attributes;
+    
+    /**
      * Model constructor.
      */
-    public function __construct()
+    public function __construct($attributes = array())
     {
         $this->connection = $this->connection ?? $this->defaultConnection;
         $this->dbDirectory = $this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory . DIRECTORY_SEPARATOR . $this->connection);
+        
+        if (!is_null($attributes))
+            foreach ($attributes as $attribute => $value) {
+                $this->attributes[$attribute] = $value;
+                // $this->{$attribute} = $value;
+            }
+        
     }
     
     /**
@@ -137,6 +150,16 @@ class Model
         return call_user_func_array(array(static::getInstance()->table(), $method ?? $name), $arguments);
     }
     
+    public function __get($name)
+    {
+        return $this->attributes[$name] ?? ($name === 'id' ? $this->attributes[$this->columnID] ?? null : null);
+    }
+    
+    public function __set($property, $value)
+    {
+        $this->attributes[$property] = $value;
+    }
+    
     /**
      * @param string|null $tablename
      * @return $this
@@ -150,7 +173,7 @@ class Model
                     : $this->table;
             }
             $this->table = $tablename;
-            $this->store = new Store($this->table, $this->connection, $this->dbDirectory, $this->perFiles, $this->columnID);
+            $this->store = new Store($this->table, $this->connection, $this->dbDirectory, $this->perFiles, get_called_class(), $this->columnID);
             return $this;
         }
         catch (ReflectionException $exception) {
@@ -210,5 +233,10 @@ class Model
     public function getDbDirectory(): ?string
     {
         return $this->dbDirectory;
+    }
+    
+    public function jsonSerialize()
+    {
+        return $this->attributes;
     }
 }

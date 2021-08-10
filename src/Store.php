@@ -106,6 +106,8 @@ class Store
      */
     private ?int $latestID = null;
     
+    private $class;
+    
     /**
      * Store constructor.
      * @param string $tablename
@@ -114,7 +116,7 @@ class Store
      * @param int $perFiles
      * @param string $columnID
      */
-    public function __construct(string $tablename, string $connection, string $dbDirectory, int $perFiles, string $columnID = '_id')
+    public function __construct(string $tablename, string $connection, string $dbDirectory, int $perFiles, $class, string $columnID = '_id')
     {
         $this->tablename = $tablename;
         $this->connection = $connection;
@@ -134,6 +136,7 @@ class Store
         $this->statsPath = $this->path . DIRECTORY_SEPARATOR . $this->statsFile;
         $this->structurePath = $this->path . DIRECTORY_SEPARATOR . $this->structureFile;
         
+        $this->class = $class;
         if (!File::exists($this->statsPath))
             File::put($this->statsPath, $this->toString(['count' => 0, 'latestID' => 0]));
         
@@ -360,6 +363,8 @@ class Store
         foreach ($data as $file => $datum)
             $this->write($file, collect($datum));
         
+        $this->count(true);
+        
         return isset($backup[0]) && is_array($backup[0]) ? $values : $values[0];
     }
     
@@ -470,7 +475,7 @@ class Store
      */
     public function get()
     {
-        $data = collect(!$this->dataSat ? $this->all() : $this->data);
+        $data = collect(!$this->dataSat ? $this->all() : $this->data)->map(fn($item) => is_array($item) || $item instanceof \stdClass ? new $this->class($item) : $item);
         
         $this->setData(isset($this->columns) && count($this->columns)
             ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()
@@ -478,7 +483,7 @@ class Store
         
         unset($data);
         
-        return is_null($this->data) || count($this->data) === 0 ? null : toObject($this->data);
+        return is_null($this->data) || count($this->data) === 0 ? null : $this->data;
     }
     
     /**
@@ -486,8 +491,13 @@ class Store
      *
      * @return int
      */
-    public function count(): int
+    public function count(bool $set = false): int
     {
+        if ($set === true) {
+            $stats = $this->stats();
+            $stats['count'] = count($this->all());
+            return File::put($this->statsPath, json_encode($stats, JSON_PRETTY_PRINT));
+        }
         return count($this->data ?? $this->all());
     }
     
@@ -498,7 +508,7 @@ class Store
      */
     public function first()
     {
-        return toObject(($this->data ?? $this->all())[0] ?? null);
+        return new $this->class(($this->data ?? $this->all())[0] ?? null);
     }
     
     /**
@@ -543,11 +553,11 @@ class Store
     
     /**
      * @param string $file
-     * @param Collection $data
+     * @param mixed $data
      * @param string $type
      * @return int
      */
-    public function write(string $file, Collection $data, string $type = 'data'): int
+    public function write(string $file, $data, string $type = 'data'): int
     {
         if ($type === 'structure')
             $path = $this->structurePath;
@@ -580,6 +590,7 @@ class Store
      */
     public function latestID(bool $set = false): int
     {
+        $stats = $this->stats();
         if ($set === true) {
             if ($this->latestID) {
                 $stats['latestID'] = $this->latestID;
@@ -587,7 +598,6 @@ class Store
             }
             return 0;
         }
-        $stats = $this->stats();
         return (int)($stats['latestID'] ?? 0);
     }
     
@@ -709,5 +719,13 @@ class Store
     public function getColumnID(): string
     {
         return $this->columnID;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getClass()
+    {
+        return $this->class;
     }
 }
