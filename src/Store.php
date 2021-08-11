@@ -369,6 +369,17 @@ class Store
     }
     
     /**
+     * @param array $values
+     * @return array
+     * @throws StructureException
+     * @throws UniqueConstraintException
+     */
+    public function create(array $values): array
+    {
+        return $this->insert($values);
+    }
+    
+    /**
      * @param array $updatable
      * @param string $column
      * @param $operator
@@ -508,7 +519,7 @@ class Store
      */
     public function first()
     {
-        return new $this->class(($this->data ?? $this->all())[0] ?? null);
+        return ($item = ($this->data ?? $this->all())[0] ?? null) ? new $this->class($item) : null;
     }
     
     /**
