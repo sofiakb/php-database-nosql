@@ -243,4 +243,15 @@ class Model implements JsonSerializable
     {
         return $this->attributes ?? [];
     }
+    
+    /**
+     * @param string|null $connection
+     */
+    public function setConnection(?string $connection): void
+    {
+        $this->connection = $connection;
+        if ($this->connection) {
+            $this->dbDirectory = ($this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
+        }
+    }
 }

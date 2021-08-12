@@ -21,7 +21,8 @@ abstract class Migration
      */
     public static function path(): string
     {
-        return (strpos(__DIR__, '/vendor') !== false ? explode('/vendor', __DIR__, 2)[0] : getcwd()) . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'nosql';
+        return "/Users/sofianeakbly/IT/Sites/sofiapi" . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'nosql';
+        // return (strpos(__DIR__, '/vendor') !== false ? explode('/vendor', __DIR__, 2)[0] : getcwd()) . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR . 'nosql';
     }
     
     /**
