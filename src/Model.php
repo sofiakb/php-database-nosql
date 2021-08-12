@@ -92,10 +92,10 @@ class Model implements JsonSerializable
     {
         if ($this->connection) {
             $this->dbDirectory = $this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory) . DIRECTORY_SEPARATOR . $this->connection;
-        }
+        } else
+            $this->dbDirectory = $this->dbDirectory ?? $this->defaultDirectory;
         
         $this->connection = $this->connection ?? $this->defaultConnection;
-        $this->dbDirectory = $this->dbDirectory ?? $this->defaultDirectory;
         
         if (!is_null($attributes))
             foreach ($attributes as $attribute => $value) {
