@@ -9,6 +9,7 @@
 
 namespace Sofiakb\Database\NoSQL;
 
+use Carbon\Carbon;
 use Exception;
 use JsonSerializable;
 use ReflectionClass;
@@ -85,6 +86,12 @@ class Model implements JsonSerializable
      */
     protected array $attributes;
     
+    protected array $appends;
+    
+    protected array $casts;
+    
+    protected $dateFormat;
+    
     /**
      * Model constructor.
      */
@@ -97,11 +104,33 @@ class Model implements JsonSerializable
         
         $this->connection = $this->connection ?? $this->defaultConnection;
         
-        if (!is_null($attributes))
+        if (!is_null($attributes)) {
             foreach ($attributes as $attribute => $value) {
-                $this->attributes[$attribute] = $value;
-                // $this->{$attribute} = $value;
+                if (isset($this->casts) && isset($this->casts[$attribute])) {
+                    $castTo = $this->casts[$attribute];
+                    if (is_string($castTo)) {
+                        switch ($castTo) {
+                            case "date":
+                                $this->attributes[$attribute] = Carbon::parse($value)->format($this->dateFormat ?: 'Y-m-d H:i:s');
+                                break;
+                            default:
+                                break;
+                        }
+                    } else if (is_callable($castTo))
+                        $this->attributes[$attribute] = $castTo($value);
+                    else
+                        $this->attributes[$attribute] = $value;
+                    
+                } else
+                    $this->attributes[$attribute] = $value;
             }
+            
+            if (isset($this->appends) && is_array($this->appends)) {
+                foreach ($this->appends as $key)
+                    if (!isset($this->attributes[$key]))
+                        $this->attributes[$key] = $this->$key();
+            }
+        }
         
     }
     
