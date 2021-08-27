@@ -214,6 +214,14 @@ class Model implements JsonSerializable
         }
     }
     
+    public function withoutAppends()
+    {
+        if (isset($this->appends)) {
+            foreach ($this->appends as $key)
+                unset($this->attributes[$key]);
+        }
+    }
+    
     /**
      * @return array|null
      */

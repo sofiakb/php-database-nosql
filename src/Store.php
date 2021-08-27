@@ -488,13 +488,20 @@ class Store
      */
     public function get(bool $withAppends = true)
     {
-        $data = collect(!$this->dataSat ? $this->all() : $this->data)->map(fn($item) => is_array($item) || $item instanceof \stdClass ? new $this->class($item, $withAppends) : $item);
+        $data = collect(!$this->dataSat ? $this->all() : $this->data)->map(function ($item) use ($withAppends) {
+            if (is_array($item) || $item instanceof \stdClass) {
+                $data = new $this->class($item, $withAppends);
+                if ($withAppends === false)
+                    $data->withoutAppends();
+                return $data;
+            }
+            return $item;
+        });
         
         $this->setData(isset($this->columns) && count($this->columns)
             ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()
-            : ($withAppends === true
-                ? $data->toArray()
-                : $data->map(fn($item) => collect($item)->except($item->appends)->all())->values()->toArray()));
+            : $data->toArray());
+        
         
         unset($data);
         
