@@ -22,7 +22,7 @@ class ColumnNotExistsException extends Exception
      */
     public function __construct(string $column, string $table, $code = 0, Throwable $previous = null)
     {
-        $message = "{{$column}} column not exists int [$table] table.";
+        $message = "{{$column}} column not exists in [$table] table.";
         parent::__construct($message, $code, $previous);
     }
 }

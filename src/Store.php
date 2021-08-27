@@ -317,7 +317,7 @@ class Store
      * @return Collection
      * @throws ColumnNotExistsException
      */
-    private function filesMatchWithFilter(string $column, &$operator, &$value = null): Collection
+    private function filesMatchWithFilter(string $column, &$operator, &$value = null)
     {
         if ($value === null) {
             $value = $operator;
