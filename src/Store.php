@@ -326,7 +326,7 @@ class Store
         
         $this->checkStructure($column);
         
-        return collect($this->findAll(null, true)->get())
+        return collect($this->findAll(null, true)->get(false))
             ->map(fn($values, $key) => collect($values)->map(fn($item) => toObject([$column => $item->$column ?? null, '__data_file' => $key]))->toArray())
             ->flatten()
             ->filter(fn($item) => $this->filterData($item, $column, $operator, $value))
@@ -354,7 +354,7 @@ class Store
         foreach ($values as $item) {
             $file = ceil((int)$item[$this->columnID] / $this->perFiles) . '.json';
             if (!isset($data[$file]))
-                $data[$file] = $this->findAll($file)->get();
+                $data[$file] = $this->findAll($file)->get(false);
             $data[$file][] = $item;
         }
         
@@ -399,7 +399,7 @@ class Store
         $updatable['updated_at'] = $updatable['updated_at'] ?? today('Y-m-d H:i:s');
         
         foreach ($files as $file)
-            $data[$file] = collect($this->findAll($file)->get())
+            $data[$file] = collect($this->findAll($file)->get(false))
                 // ->filter(fn($item) => $this->filterDataNegative($item, $column, $operator, $value))
                 ->map(function ($item) use ($column, $operator, $value, $updatable) {
                     if (!$this->filterData($item, $column, $operator, $value))
@@ -450,7 +450,7 @@ class Store
         $data = [];
         
         foreach ($files as $file)
-            $data[$file] = collect($this->findAll($file)->get())->filter(fn($item) => $this->filterDataNegative($item, $column, $operator, $value));
+            $data[$file] = collect($this->findAll($file)->get(false))->filter(fn($item) => $this->filterDataNegative($item, $column, $operator, $value));
         
         
         foreach ($data as $file => $datum) {
@@ -481,12 +481,14 @@ class Store
     
     /**
      * Get the data value.
+     * @param bool $withAppends
+     *
      *
      * @return mixed|null
      */
-    public function get()
+    public function get(bool $withAppends = true)
     {
-        $data = collect(!$this->dataSat ? $this->all() : $this->data)->map(fn($item) => is_array($item) || $item instanceof \stdClass ? new $this->class($item) : $item);
+        $data = collect(!$this->dataSat ? $this->all() : $this->data)->map(fn($item) => is_array($item) || $item instanceof \stdClass ? new $this->class($item, $withAppends) : $item);
         
         $this->setData(isset($this->columns) && count($this->columns)
             ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()

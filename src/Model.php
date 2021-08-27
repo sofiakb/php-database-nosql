@@ -95,7 +95,7 @@ class Model implements JsonSerializable
     /**
      * Model constructor.
      */
-    public function __construct($attributes = array())
+    public function __construct($attributes = array(), $withAppends = true)
     {
         if ($this->connection) {
             $this->dbDirectory = ($this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
@@ -125,7 +125,7 @@ class Model implements JsonSerializable
                     $this->attributes[$attribute] = $value;
             }
             
-            if (isset($this->appends) && is_array($this->appends)) {
+            if ($withAppends && isset($this->appends) && is_array($this->appends)) {
                 foreach ($this->appends as $key)
                     if (!isset($this->attributes[$key]))
                         $this->attributes[$key] = $this->$key();
