@@ -86,7 +86,7 @@ class Model implements JsonSerializable
      */
     protected array $attributes;
     
-    protected array $appends;
+    public array $appends;
     
     protected array $casts;
     

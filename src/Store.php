@@ -492,7 +492,9 @@ class Store
         
         $this->setData(isset($this->columns) && count($this->columns)
             ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()
-            : $data->toArray());
+            : ($withAppends === true
+                ? $data->toArray()
+                : $data->map(fn($item) => collect($item)->except($item->appends)->all())->values()->toArray()));
         
         unset($data);
         
