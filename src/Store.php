@@ -106,7 +106,7 @@ class Store
      */
     private ?int $latestID = null;
     
-    private $class;
+    public $class;
     
     /**
      * Store constructor.

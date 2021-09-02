@@ -251,6 +251,39 @@ class Model implements JsonSerializable
     // }
     
     /**
+     * @param array $updatable
+     * @return bool
+     * @throws Exceptions\ColumnNotExistsException
+     */
+    public function update(array $updatable)
+    {
+        $columnID = $this->columnID;
+        return $this->table()->getStore()->updateBy($updatable, $this->columnID, $this->$columnID);
+    }
+    
+    /**
+     * @return bool
+     * @throws Exceptions\ColumnNotExistsException
+     */
+    public function delete()
+    {
+        $columnID = $this->columnID;
+        return $this->table()->getStore()->deleteBy($this->columnID, $this->$columnID);
+    }
+    
+    public static function create($values)
+    {
+        $store = static::getInstance()->table()->getStore();
+        if (isset($values[0]) && is_array($values[0])) {
+            $result = [];
+            foreach ($values as $item)
+                $result[] = new $store->class($store->insert($item));
+            return $result;
+        }
+        return new $store->class($store->insert($values));
+    }
+    
+    /**
      * @param $value
      * @return Store
      */
