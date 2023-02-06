@@ -4,6 +4,8 @@
 namespace Sofiakb\Database\NoSQL\Schema\Attributes;
 
 
+use Sofiakb\Database\NoSQL\Tools\Helpers;
+
 class Type
 {
     /**
@@ -204,7 +206,7 @@ class Type
     
     public function compile()
     {
-        return toObject([
+        return Helpers::toObject([
             'name'      => $this->name,
             'column'    => $this->column,
             'length'    => $this->length,

@@ -6,18 +6,21 @@
  * Time: 11:55
  */
 
+namespace Sofiakb\Database\NoSQL\Tools;
+
 use Carbon\Carbon;
 
-if (!function_exists('pluralize')) {
+class Helpers
+{
     /**
      * Pluralizes a word if quantity is not one.
      *
      * @param int $quantity Number of items
      * @param string $singular Singular form of word
-     * @param string|null $plural Plural form of word; function will attempt to deduce plural form from singular if not provided
+     * @param string|null $plural Plural form of word; static function will attempt to deduce plural form from singular if not provided
      * @return string Pluralized word if quantity is not one, otherwise singular
      */
-    function pluralize(string $singular, int $quantity = 2, ?string $plural = null): string
+    static function pluralize(string $singular, int $quantity = 2, ?string $plural = null): string
     {
         if ($quantity == 1 || !strlen($singular)) return $singular;
         if ($plural !== null) return $plural;
@@ -32,50 +35,47 @@ if (!function_exists('pluralize')) {
                 return $singular . 's';
         }
     }
-}
-
-if (!function_exists('toObject')) {
+    
+    
     /**
      * @param mixed $data
      * @return mixed|null
      */
-    function toObject($data)
+    static function toObject($data)
     {
         return $data ? json_decode(json_encode($data)) : null;
     }
-}
-
-if (!function_exists('toArray')) {
+    
+    
     /**
      * @param mixed $data
      * @return array|null
      */
-    function toArray($data)
+    static function toArray($data): ?array
     {
         return $data ? json_decode(json_encode($data), true) : null;
     }
-}
-
-if (!function_exists('project_path')) {
+    
+    
     /**
      * Get the path to the project folder.
      *
      * @return string
      */
-    function project_path(): string
+    static function project_path(): string
     {
         list($scriptPath) = get_included_files();
         return dirname($scriptPath);
     }
-}
-
-if (!function_exists('today')) {
+    
     /**
      * @param null $format
-     * @return mixed
+     * @return Carbon|string
      */
-    function today($format = null)
+    static function today($format = null)
     {
         return $format ? Carbon::now()->format($format) : Carbon::now();
     }
+    
+    
 }

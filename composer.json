@@ -10,9 +10,6 @@
         },
         "classmap": [
             "tests/"
-        ],
-        "files": [
-            "src/Tools/helpers.php"
         ]
     },
     "authors": [

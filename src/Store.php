@@ -15,6 +15,7 @@ use Sofiakb\Database\NoSQL\Exceptions\ColumnNotExistsException;
 use Sofiakb\Database\NoSQL\Exceptions\StructureException;
 use Sofiakb\Database\NoSQL\Exceptions\UniqueConstraintException;
 use Sofiakb\Database\NoSQL\Tools\Checker\Checker;
+use Sofiakb\Database\NoSQL\Tools\Helpers;
 use Sofiakb\Filesystem\Facades\File;
 use Sofiakb\Support\Traits\ForwardsCalls;
 use Tightenco\Collect\Support\Collection;
@@ -327,7 +328,7 @@ class Store
         $this->checkStructure($column);
         
         return collect($this->findAll(null, true)->get(false))
-            ->map(fn($values, $key) => collect($values)->map(fn($item) => toObject([$column => $item->$column ?? null, '__data_file' => $key]))->toArray())
+            ->map(fn($values, $key) => collect($values)->map(fn($item) => Helpers::toObject([$column => $item->$column ?? null, '__data_file' => $key]))->Helpers::toArray())
             ->flatten()
             ->filter(fn($item) => $this->filterData($item, $column, $operator, $value))
             ->map(fn($item) => $item->__data_file);
@@ -396,7 +397,7 @@ class Store
         $checker = new Checker($this, json_decode(File::get($this->structurePath), true));
         $checker->update($updatable);
         
-        $updatable['updated_at'] = $updatable['updated_at'] ?? today('Y-m-d H:i:s');
+        $updatable['updated_at'] = $updatable['updated_at'] ?? Helpers::today('Y-m-d H:i:s');
         
         foreach ($files as $file)
             $data[$file] = collect($this->findAll($file)->get(false))
@@ -499,8 +500,8 @@ class Store
         });
         
         $this->setData(isset($this->columns) && count($this->columns)
-            ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()
-            : $data->toArray());
+            ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->Helpers::toArray()
+            : $data->Helpers::toArray());
         
         
         unset($data);
@@ -587,7 +588,7 @@ class Store
             $path = $this->statsPath;
         else $path = $this->dataPath;
         
-        return File::put($path . DIRECTORY_SEPARATOR . $file, $this->toString($data->values()->toArray()));
+        return File::put($path . DIRECTORY_SEPARATOR . $file, $this->toString($data->values()->Helpers::toArray()));
     }
     
     /**
@@ -696,7 +697,7 @@ class Store
         if (!$checker->unique())
             throw new UniqueConstraintException();
         
-        $now = today('Y-m-d H:i:s');
+        $now = Helpers::today('Y-m-d H:i:s');
         $item['created_at'] = $now;
         $item['updated_at'] = $now;
         

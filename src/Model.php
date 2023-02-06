@@ -14,6 +14,7 @@ use Exception;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionException;
+use Sofiakb\Database\NoSQL\Tools\Helpers;
 use Sofiakb\Support\Traits\ForwardsCalls;
 use Tightenco\Collect\Support\Collection;
 
@@ -98,7 +99,7 @@ class Model implements JsonSerializable
     public function __construct($attributes = array(), $withAppends = true)
     {
         if ($this->connection) {
-            $this->dbDirectory = ($this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
+            $this->dbDirectory = ($this->dbDirectory ?? (Helpers::project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
         } else
             $this->dbDirectory = $this->dbDirectory ?? $this->defaultDirectory;
         
@@ -202,7 +203,7 @@ class Model implements JsonSerializable
         try {
             if (is_null($tablename)) {
                 $tablename = is_null($this->table)
-                    ? pluralize(strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', str_replace([(new ReflectionClass(get_called_class()))->getNamespaceName(), '\\'], '', get_called_class()))))
+                    ? Helpers::pluralize(strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', str_replace([(new ReflectionClass(get_called_class()))->getNamespaceName(), '\\'], '', get_called_class()))))
                     : $this->table;
             }
             $this->table = $tablename;
@@ -227,7 +228,7 @@ class Model implements JsonSerializable
      */
     // public function all(): ?array
     // {
-    //     return toObject(self::getInstance()->table()->getStore()->findAll()->get());
+    //     return Helpers::toObject(self::getInstance()->table()->getStore()->findAll()->get());
     // }
     
     /**
@@ -321,7 +322,7 @@ class Model implements JsonSerializable
     {
         $this->connection = $connection;
         if ($this->connection) {
-            $this->dbDirectory = ($this->dbDirectory ?? (project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
+            $this->dbDirectory = ($this->dbDirectory ?? (Helpers::project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
         }
     }
 }
