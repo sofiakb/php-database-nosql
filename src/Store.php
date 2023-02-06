@@ -328,7 +328,7 @@ class Store
         $this->checkStructure($column);
         
         return collect($this->findAll(null, true)->get(false))
-            ->map(fn($values, $key) => collect($values)->map(fn($item) => Helpers::toObject([$column => $item->$column ?? null, '__data_file' => $key]))->Helpers::toArray())
+            ->map(fn($values, $key) => collect($values)->map(fn($item) => Helpers::toObject([$column => $item->$column ?? null, '__data_file' => $key]))->toArray())
             ->flatten()
             ->filter(fn($item) => $this->filterData($item, $column, $operator, $value))
             ->map(fn($item) => $item->__data_file);
@@ -500,8 +500,8 @@ class Store
         });
         
         $this->setData(isset($this->columns) && count($this->columns)
-            ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->Helpers::toArray()
-            : $data->Helpers::toArray());
+            ? $data->map(fn($item) => collect($item)->only($this->columns)->all())->values()->toArray()
+            : $data->toArray());
         
         
         unset($data);
@@ -588,7 +588,7 @@ class Store
             $path = $this->statsPath;
         else $path = $this->dataPath;
         
-        return File::put($path . DIRECTORY_SEPARATOR . $file, $this->toString($data->values()->Helpers::toArray()));
+        return File::put($path . DIRECTORY_SEPARATOR . $file, $this->toString($data->values()->toArray()));
     }
     
     /**

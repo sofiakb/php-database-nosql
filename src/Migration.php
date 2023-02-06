@@ -48,7 +48,7 @@ abstract class Migration
         $dirs = File::directories(self::path());
         
         foreach ($dirs as $dir) {
-            $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => Helpers::toObject(['__name' => $item->getName(), '__path' => $item->getPath(), 'connection' => $dir->getName()]))->Helpers::toArray());
+            $files = array_merge($files, collect(File::files($dir->getPath() . DIRECTORY_SEPARATOR . $dir->getName()))->map(fn($item) => Helpers::toObject(['__name' => $item->getName(), '__path' => $item->getPath(), 'connection' => $dir->getName()]))->toArray());
         }
         
         $migrations = [];
