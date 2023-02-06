@@ -164,7 +164,7 @@ class Store
         foreach ($files as $file) {
             if ($withFiles)
                 $data[$file->getName()] = json_decode(File::get($this->dataPath . DIRECTORY_SEPARATOR . $file->getName()));
-            else $data = array_merge($data, json_decode(File::get($this->dataPath . DIRECTORY_SEPARATOR . $file->getName())));
+            else $data = array_merge($data, json_decode(File::get($this->dataPath . DIRECTORY_SEPARATOR . $file->getName())) ?? []);
         }
         
         $this->setData($data);
