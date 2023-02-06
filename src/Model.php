@@ -25,7 +25,6 @@ use Tightenco\Collect\Support\Collection;
  *
  * @method static int count()
  *
- * @mixin Model
  * @mixin Store
  */
 class Model implements JsonSerializable
@@ -124,6 +123,7 @@ class Model implements JsonSerializable
                     
                 } else
                     $this->attributes[$attribute] = $value;
+                $this->$attribute = $this->attributes[$attribute];
             }
             
             if ($withAppends && isset($this->appends) && is_array($this->appends)) {
