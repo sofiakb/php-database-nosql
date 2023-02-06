@@ -54,18 +54,20 @@ class MakeMigrationCommand extends Command
         
         $filename = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class)) . '.php';
         
+        
         if (($connection = $this->option('connection'))) {
             $filename = $connection . DIRECTORY_SEPARATOR . $filename;
             $class = $class . strtoupper('__' . $connection);
             File::ensureDirectoryExists($this->migrationPath . DIRECTORY_SEPARATOR . $connection);
         }
         
+        $filepath = $this->migrationPath . DIRECTORY_SEPARATOR . $filename;
         
-        if (File::exists($filename))
-            throw new Exception("File [$filename] already exists");
+        if (File::exists($filepath))
+            throw new Exception("File [$filepath] already exists");
         
         if ($connection)
-            File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace([self::EXAMPLE_CONNECTION_CLASS, 'CONNECTION_VALUE'], [$class, $connection], File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CONNECTION_CLASS . '.php')));
-        else File::put($this->migrationPath . DIRECTORY_SEPARATOR . $filename, str_replace(self::EXAMPLE_CLASS, $class, File::get(project_path() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
+            File::put($filepath, str_replace([self::EXAMPLE_CONNECTION_CLASS, 'CONNECTION_VALUE'], [$class, $connection], File::get(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CONNECTION_CLASS . '.php')));
+        else File::put($filepath, str_replace(self::EXAMPLE_CLASS, $class, File::get(__DIR__ . DIRECTORY_SEPARATOR. ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . 'Tools' . DIRECTORY_SEPARATOR . self::EXAMPLE_CLASS . '.php')));
     }
 }
