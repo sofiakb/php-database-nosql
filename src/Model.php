@@ -325,4 +325,12 @@ class Model implements JsonSerializable
             $this->dbDirectory = ($this->dbDirectory ?? (Helpers::project_path() . DIRECTORY_SEPARATOR . $this->defaultDirectory)) . DIRECTORY_SEPARATOR . $this->connection;
         }
     }
+    
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->attributes;
+    }
 }
