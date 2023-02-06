@@ -36,8 +36,8 @@
     },
     "require": {
         "ext-json": "*",
-        "sofiakb/php-filesystem": "^0.0.2",
-        "sofiakb/php-support": "^0.0.9-beta3",
+        "sofiakb/php-filesystem": "^0.0.4",
+        "sofiakb/php-support": "^0.0.10",
         "tightenco/collect": "^8.34"
     },
     "bin": [
